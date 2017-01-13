@@ -28,3 +28,6 @@ ansible/wheel
 
 # aws public keys
 .keys
+
+# inventory files
+inventory
