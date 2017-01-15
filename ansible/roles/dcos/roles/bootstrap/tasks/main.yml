@@ -1,0 +1,64 @@
+- name: install required system packages
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+   - unzip
+   - ipset
+
+- name: create dcos group
+  group: name={{ dcos_bootstrap_group }} state=present
+
+- name: create dcos user
+  user:
+    name: "{{ dcos_bootstrap_user }}"
+    groups: "wheel,docker,{{ dcos_bootstrap_group }}"
+    home: "{{ dcos_bootstrap_home }}"
+
+- name: check if docker bootstrap container is running
+  sudo: true
+  shell: docker ps -q
+  register: docker_is_running
+  ignore_errors: yes
+
+- name: create genconf folder
+  become: yes
+  become_user: "{{ dcos_bootstrap_user }}"
+  file: path={{ dcos_bootstrap_home }}/genconf state=directory
+  when: docker_is_running.stdout == ""
+
+- name: setup ip-detect script
+  become: yes
+  become_user: "{{ dcos_bootstrap_user }}"
+  template: src=ip-detect dest={{ dcos_bootstrap_home }}/genconf/ip-detect mode=0755
+  when: docker_is_running.stdout == ""
+
+- name: dcos config file
+  become: yes
+  become_user: "{{ dcos_bootstrap_user }}"
+  template: src=config.yaml.j2 dest={{ dcos_bootstrap_home }}/genconf/config.yaml
+  when: docker_is_running.stdout == ""
+
+- name: download dcos install script
+  become: yes
+  become_user: "{{ dcos_bootstrap_user }}"
+  get_url: url={{ dcos_install_script_url }} dest={{ dcos_bootstrap_home }}/dcos_generate_config.sh force=no mode=0755
+  when: docker_is_running.stdout == ""
+
+- name: run dcos install script
+  sudo: true
+  shell: ./dcos_generate_config.sh
+  args:
+    chdir: "{{ dcos_bootstrap_home }}"
+    executable: /usr/bin/bash
+  when: docker_is_running.stdout == ""
+
+- name: run bootstrap nginx docker container
+  sudo: true
+  shell: >
+    docker run -d -p {{ dcos_bootstrap_port }}:80 -v $PWD/genconf/serve:/usr/share/nginx/html:ro nginx
+  args:
+    chdir: "{{ dcos_bootstrap_home }}"
+  when: docker_is_running.stdout == ""
+
+- include: install_packages.yml
+  when: install_packages

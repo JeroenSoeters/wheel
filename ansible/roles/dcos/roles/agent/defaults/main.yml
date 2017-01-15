@@ -1,0 +1,2 @@
+dcos_bootstrap_port: 18080
+dcos_master_agent_install_url: http://{{groups['dcos-bootstrap'][0]}}:{{dcos_bootstrap_port}}/dcos_install.sh

@@ -1,0 +1,29 @@
+- name: Log into private registry and force re-authorization
+  docker_login:
+    registry: https://some-domain:18444
+    username: admin
+    password: admin123
+
+- name: pull local universe package
+  docker_image:
+    name: some-domain:18444/mesosphere/universe
+
+- name: copy dcos-local-universe-http config
+  copy: src=roles/dcos/roles/master/files/dcos-local-universe-http.service dest=/etc/systemd/system
+
+- name: reload daemon
+  shell: systemctl daemon-reload
+  sudo: yes
+
+- name: enable the dcos-local-universe-http
+  service: name=dcos-local-universe-http enabled=yes state=started
+
+- name: copy dcos-local-universe-registry config
+  copy: src=roles/dcos/roles/master/files/dcos-local-universe-registry.service dest=/etc/systemd/system
+
+- name: reload daemon
+  shell: systemctl daemon-reload
+  sudo: yes
+
+- name: enable the dcos-local-universe-registry
+  service: name=dcos-local-universe-registry enabled=yes state=started

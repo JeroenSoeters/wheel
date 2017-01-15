@@ -1,0 +1,45 @@
+- name: Fetch list of installed services
+  uri:
+    url: "http://{{ groups['dcos-mesos-master'][0] }}/mesos/master/state.json"
+    method: GET
+    HEADER_Authorization: "token={{ dcos_token }}"
+    HEADER_Connection: keep-alive
+    HEADER_User-Agent: python-requests/2.10.0
+    HEADER_Accept: application/json
+    return_content: yes
+    body: {}
+    body_format: json
+  register: service_list
+
+- name: Fetch list of installed apps
+  uri:
+    url: "http://{{ groups['dcos-mesos-master'][0] }}:8080/v2/apps"
+    method: GET
+    HEADER_Authorization: "token={{ dcos_token }}"
+    HEADER_Connection: keep-alive
+    HEADER_User-Agent: python-requests/2.10.0
+    HEADER_Accept: application/json
+    return_content: yes
+    body: {}
+    body_format: json
+  register: app_list
+
+- name: Extract installed apps
+  set_fact: installed_apps="{{ (app_list.content | from_json )['apps'] | map(attribute='id') | list }}"
+
+- name: Extract installed services
+  set_fact: installed_services="{{ (service_list.content | from_json )['frameworks'] | map(attribute='name') | list }}"
+
+- name: Installs marathon-lb
+  uri:
+    url: "http://{{ groups['dcos-mesos-master'][0] }}/package/install"
+    method: POST
+    HEADER_Connection: keep-alive
+    HEADER_Authorization: "token={{ dcos_token }}"
+    HEADER_Accept-Encoding: gzip, deflate
+    HEADER_Accept: application/vnd.dcos.package.install-response+json;charset=utf-8;version=v1
+    HEADER_User-Agent: python-requests/2.10.0
+    HEADER_Content-Type: application/vnd.dcos.package.install-request+json;charset=utf-8;version=v1
+    body: "{{ lookup('template', 'roles/dcos/roles/bootstrap/templates/marathon-lb_install_config.json') }}"
+    body_format: json
+  when: "'/marathon-lb-external' not in installed_apps"

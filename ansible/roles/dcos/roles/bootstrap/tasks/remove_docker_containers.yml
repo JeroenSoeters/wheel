@@ -1,0 +1,31 @@
+- name: check if there are docker instances
+  sudo: true
+  shell: docker ps -a -q
+  register: docker_list
+  ignore_errors: yes
+
+- name: check if there are dangling volumes
+  sudo: true
+  shell: docker volume ls -qf dangling=true
+  register: docker_volume_list
+
+- name: check if there are docker images
+  sudo: true
+  shell: docker images -aq -f dangling=true
+  register: docker_image_list
+
+- name: stop all running docker containers
+  shell: docker stop $(docker ps -a -q)
+  when: docker_list.stdout != ""
+
+- name: remove all docker containers
+  shell: docker rm -v $(docker ps -a -q)
+  when: docker_list.stdout != ""
+
+- name: remove all docker volumes
+  shell: docker volume ls -qf dangling=true | xargs -r docker volume rm
+  when: docker_volume_list.stdout != ""
+
+- name: remove all docker images
+  shell: docker rmi $(docker images -aq -f dangling=true)
+  when: docker_image_list.stdout != ""

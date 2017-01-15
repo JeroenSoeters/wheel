@@ -1,0 +1,26 @@
+- name: install required system packages
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+   - unzip
+   - ipset
+
+- name: create dcos group
+  group: name={{ item }} state=present
+  with_items:
+    - "{{ dcos_bootstrap_group }}"
+    - "nogroup"
+
+- name: Split out the logs for each application
+  template: src=mesos.conf dest=/etc/rsyslog.d/mesos.conf
+  notify:
+    - reload rsyslog
+
+- name: create dcos user
+  user:
+    name: "{{ dcos_bootstrap_user }}"
+    groups: "wheel,docker,{{ dcos_bootstrap_group }}"
+    home: "{{ dcos_bootstrap_home }}"
+
+- name: create temp folder for installation
+  file: name=/tmp/dcos state=directory

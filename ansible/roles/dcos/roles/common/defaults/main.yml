@@ -1,0 +1,13 @@
+dcos_bootstrap_user: dcos
+dcos_bootstrap_group: dcos
+dcos_cluster_name: xplanning-dcos
+dcos_bootstrap_home: /var/dcos-bootstrap
+dcos_users: []
+
+marathon_lb_package_name: marathon-lb
+marathon_lb_package_version: 1.3.5
+marathon_lb_cpus: 1
+marathon_lb_mem: 1024
+marathon_lb_disk: 1000
+marathon_lb_disk_type: MOUNT
+marathon_lb_count: 1
