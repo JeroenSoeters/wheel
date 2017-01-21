@@ -1,7 +1,0 @@
-dcos_bootstrap_user: dcos
-dcos_bootstrap_group: dcos
-dcos_cluster_name: wheel-ci-dcos
-dcos_bootstrap_tmp_ssh_key_path: /tmp/fetched/dcos_bootstrap_user_key.pub
-dcos_bootstrap_home: /var/dcos-bootstrap
-dcos_bootstrap_port: 18080
-dcos_master_agent_install_url: http://{{groups['dcos-bootstrap'][0]}}:{{dcos_bootstrap_port}}/dcos_install.sh

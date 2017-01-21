@@ -1,2 +1,0 @@
-- name: reload dcos-cosmos
-  command: systemctl restart dcos-cosmos
