@@ -1,9 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
-	helpFunc()
+	if len(os.Args) == 1 {
+		helpFunc()
+		os.Exit(0)
+	}
+
+	fmt.Println("WARNING: This is a pretoyype, no functionality included!")
 }
 
 func helpFunc() {
