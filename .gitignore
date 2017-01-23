@@ -25,3 +25,8 @@ _testmain.go
 
 # Python venv
 ansible/wheel
+
+# Vim files
+*.swp
+
+.DS_Store
