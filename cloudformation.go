@@ -27,8 +27,10 @@ func OpenTemplate() *cf.Template {
 func DeployDCOSCluster() error {
 	template := OpenTemplate()
 	s := session.New(&aws.Config{Region: aws.String("us-west-2")})
-
-	input := dcf.DeployInput{s, "dcos-test-cluster", template, nil, ""}
+	params := map[string]string{
+		"KeyName": "dcos-bootstrap",
+	}
+	input := dcf.DeployInput{s, "dcos-test-cluster", template, params, ""}
 
 	return dcf.Deploy(input)
 }
