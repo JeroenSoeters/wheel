@@ -1,17 +1,22 @@
-package wheel
+package main
 
 import (
 	"fmt"
 	"os"
+
+	"github.com/JeroenSoeters/wheel/wheel"
 )
 
 func main() {
-	if len(os.Args) == 1 {
+	if len(os.Args) == 1 || os.Args[1] != "init" {
 		helpFunc()
 		os.Exit(0)
 	}
 
-	fmt.Println("WARNING: This is a pretoyype, no functionality included!")
+	// Come up with nicer way of dispatching to commands
+	wheel.InitConfig(wheel.Config{
+		ProjectName: "training-wheels",
+	})
 }
 
 func helpFunc() {
@@ -25,6 +30,7 @@ Options:
   -v, --version    Print version information and quit
 
 Commands:
+  describe		  Describe this wheel system
   init            Create a new wheel system
   services        Mangage services
   environments    List environments
