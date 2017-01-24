@@ -1,36 +1,60 @@
-package main
+package wheel
 
 import (
-	"bufio"
-	"encoding/json"
 	"fmt"
-	"os"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	cf "github.com/crewjam/go-cloudformation"
-	dcf "github.com/crewjam/go-cloudformation/deploycfn"
+	"github.com/aws/aws-sdk-go/service/cloudformation"
+	"io/ioutil"
+	"os"
 )
 
-func OpenTemplate() *cf.Template {
-	file, err := os.Open("/Users/jeroensoeters/dev/gocode/src/github.com/JeroenSoeters/wheel/templates/single-master.cloudformation.json")
+const templateFile = "/Users/jeroensoeters/dev/gocode/src/github.com/JeroenSoeters/wheel/templates/single-master.cloudformation.json"
+
+func readTemplate(template string) (string, error) {
+	bs, err := ioutil.ReadFile(template)
 	if err != nil {
 		fmt.Printf("Error opening CloudFormation template: %v", err)
 		os.Exit(1)
 	}
-	t := cf.Template{}
-	json.NewDecoder(bufio.NewReader(file)).Decode(&t)
 
-	return &t
+	return string(bs), nil
 }
 
-func DeployDCOSCluster() error {
-	template := OpenTemplate()
-	s := session.New(&aws.Config{Region: aws.String("us-west-2")})
-	params := map[string]string{
-		"KeyName": "dcos-bootstrap",
+func CreateStack(region string, name string, parameters map[string]string) error {
+	template, err := readTemplate(templateFile)
+	if err != nil {
+		fmt.Printf("Error loading template: %v", err)
 	}
-	input := dcf.DeployInput{s, "dcos-test-cluster", template, params, ""}
 
-	return dcf.Deploy(input)
+	s := session.New(&aws.Config{Region: aws.String(region)})
+	cf := cloudformation.New(s)
+
+	_, err = cf.DescribeStacks(&cloudformation.DescribeStacksInput{
+		StackName: aws.String(name),
+	})
+
+	if err != nil {
+		fmt.Printf("Error describing stack %v", err)
+	}
+
+	capabilities := []*string{}
+	capabilities = append(capabilities, aws.String(cloudformation.CapabilityCapabilityIam))
+
+	params := []*cloudformation.Parameter{}
+	for key, value := range parameters {
+		params = append(params, &cloudformation.Parameter{
+			ParameterKey:   aws.String(key),
+			ParameterValue: aws.String(value),
+		})
+	}
+
+	_, err = cf.CreateStack(&cloudformation.CreateStackInput{
+		StackName:    aws.String(name),
+		TemplateBody: &template,
+		Capabilities: capabilities,
+		Parameters:   params,
+	})
+
+	return err
 }
