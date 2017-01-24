@@ -15,7 +15,7 @@ type Config struct {
 	ProjectName string
 }
 
-func InitWheel() {
+func Init() {
 	flag.Parse()
 	InitConfig(Config{
 		ProjectName: *project,

@@ -14,9 +14,7 @@ func main() {
 	}
 
 	// Come up with nicer way of dispatching to commands
-	wheel.InitConfig(wheel.Config{
-		ProjectName: "training-wheels",
-	})
+	wheel.Init()
 }
 
 func helpFunc() {
