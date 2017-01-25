@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/JeroenSoeters/wheel/aws"
 )
 
 // InitCommand is a cli.Command implementation that initializes a Wheel project
@@ -63,6 +65,13 @@ project {
 	}
 	w.Flush()
 	fmt.Println("Created wheel config")
+
+	if err := aws.CreateStack("us-west-2", "dcos-test", map[string]string{
+		"KeyName": config.KeyPair,
+	}); err != nil {
+		fmt.Errorf("Error creating stack %v", err)
+		return 1
+	}
 
 	return 0
 }
