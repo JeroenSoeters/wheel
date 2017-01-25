@@ -1,40 +1,28 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 
-	"github.com/JeroenSoeters/wheel/wheel"
+	"github.com/mitchellh/cli"
 )
 
 func main() {
-	if len(os.Args) == 1 || os.Args[1] != "init" {
+	args := os.Args[1:]
+
+	if len(os.Args) == 0 {
 		helpFunc()
-		os.Exit(0)
+		os.Exit(2)
 	}
 
-	// Come up with nicer way of dispatching to commands
-	wheel.Init()
-}
+	c := cli.NewCLI("wheel", "0.0.1")
+	c.Args = args
+	c.Commands = Commands
 
-func helpFunc() {
-	helpText :=
-		`Usage: wheel [OPTIONS] COMMAND [arg...]
+	exitStatus, err := c.Run()
+	if err != nil {
+		log.Println(err)
+	}
 
-A tool for managing distributed systems.
-
-Options:
-  -d, --dry-run    Dry run is just a simulation, it will not make any changes to your system
-  -v, --version    Print version information and quit
-
-Commands:
-  describe		  Describe this wheel system
-  init            Create a new wheel system
-  services        Mangage services
-  environments    List environments
-  run	          Run services
-
-Run 'wheel COMMAND --help' for more information on a command.`
-
-	fmt.Println(helpText)
+	os.Exit(exitStatus)
 }

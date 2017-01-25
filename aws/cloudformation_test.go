@@ -1,4 +1,4 @@
-package wheel
+package aws
 
 import "testing"
 
