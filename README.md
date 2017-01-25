@@ -12,5 +12,16 @@ Meet Wheel! Wheel aims at bootstrapping a micro service system in minutes instea
 
 Wheel is a command line util (written in golang) that orchestrates infrastructure as code and pipelines as code with the aim of drastically improving team productivity.
 
+## Initial tech stack that will supported in an MVP
+* AWS
+* DC/OS
+* Kubernetes
+* Jenkins
+* Nexus
+* Spinnaker
+
+## Templates
+* scala-sbt
+
 ## Contributing
 For contributing please reach out at our slack: wheel-group.slack.com
