@@ -11,3 +11,6 @@ Installation and configuration of all these tools is time consuming and requires
 Meet Wheel! Wheel aims at bootstrapping a micro service system in minutes instead of months. Adding a new service requires a single command instead of a week's worth of configuring pipelines, docker compose, kubernetes etc. You tell Wheel which tool chain you prefer and wheel does the work for you. It aims to be tech-stack agnostic, extensible and very much pick-and-choose.
 
 Wheel is a command line util (written in golang) that orchestrates infrastructure as code and pipelines as code with the aim of drastically improving team productivity.
+
+## Contributing
+For contributing please reach out at our slack: wheel-group.slack.com
