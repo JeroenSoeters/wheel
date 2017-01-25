@@ -2,27 +2,26 @@ package aws
 
 import (
 	"fmt"
+	"os"
+
+	"github.com/JeroenSoeters/wheel/templates"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudformation"
-	"io/ioutil"
-	"os"
 )
 
-const templateFile = "/Users/jeroensoeters/dev/gocode/src/github.com/JeroenSoeters/wheel/templates/single-master.cloudformation.json"
-
-func readTemplate(template string) (string, error) {
-	bs, err := ioutil.ReadFile(template)
+func ReadTemplate() (string, error) {
+	data, err := templates.Asset("templates/single-master.cloudformation.json")
 	if err != nil {
-		fmt.Printf("Error opening CloudFormation template: %v", err)
+		fmt.Errorf("Error loading CloudFormation single-master template: %v", err)
 		os.Exit(1)
 	}
 
-	return string(bs), nil
+	return string(data), nil
 }
 
 func CreateStack(region string, name string, parameters map[string]string) error {
-	template, err := readTemplate(templateFile)
+	template, err := ReadTemplate()
 	if err != nil {
 		fmt.Printf("Error loading template: %v", err)
 	}

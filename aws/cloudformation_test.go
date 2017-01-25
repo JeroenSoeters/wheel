@@ -1,14 +1,13 @@
 package aws
 
-import "testing"
-
-const temmplateFile = "/Users/jeroensoeters/dev/gocode/src/github.com/JeroenSoeters/wheel/templates/single-master.cloudformation.json"
+import (
+	"testing"
+)
 
 func TestReadTemplate(t *testing.T) {
-	template, err := readTemplate(templateFile)
-
+	template, err := ReadTemplate()
 	if err != nil {
-		t.Error("Error loading cloudformation template file: %v", err)
+		t.Fatalf("Failed to load template: %v", err)
 	}
 
 	expectedStart := "{\"Para"
