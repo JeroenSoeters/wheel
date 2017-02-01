@@ -7,13 +7,24 @@ import (
 	"testing"
 )
 
+type MockCloudProvider struct {
+	BuildEnvironmentProvisioned bool
+}
+
+func (m MockCloudProvider) ProvisionBuildEnvironment() err {
+	m.BuildEnvironmentProvisioned = true
+}
+
 func TestInitConfig(t *testing.T) {
 	args := []string{
 		"-project-name", "training-wheels",
 		"-key-pair", "dcos-bootstrap",
 	}
 
-	c := &InitCommand{}
+	provider := MockCloudProvider{}
+	c := &InitCommand{
+		Provider: &provider,
+	}
 	if code := c.Run(args); code != 0 {
 		t.Fatalf("Exited with code: %d", code)
 	}
@@ -25,6 +36,10 @@ func TestInitConfig(t *testing.T) {
 
 	if strings.Index(string(f), "training-wheels") == -1 {
 		t.Errorf("Config did not contain project name %s", "training-wheels")
+	}
+
+	if !provider.BuildEnvironmentProvisioned {
+		t.Fatal("ProvisionBuildEnvironment was not called")
 	}
 
 	clean()

@@ -10,6 +10,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/cloudformation"
 )
 
+type AwsClient struct {
+}
+
 func ReadTemplate() (string, error) {
 	data, err := templates.Asset("templates/single-master.cloudformation.json")
 	if err != nil {
@@ -18,6 +21,10 @@ func ReadTemplate() (string, error) {
 	}
 
 	return string(data), nil
+}
+
+func (c AwsClient) ProvisionBuildEnvironment() error {
+	return CreateStack("us-west-2", "dcos-build", map[string]string{"KeyName": "dcos-bootstrap"})
 }
 
 func CreateStack(region string, name string, parameters map[string]string) error {
@@ -29,13 +36,9 @@ func CreateStack(region string, name string, parameters map[string]string) error
 	s := session.New(&aws.Config{Region: aws.String(region)})
 	cf := cloudformation.New(s)
 
-	_, err = cf.DescribeStacks(&cloudformation.DescribeStacksInput{
+	_, _ = cf.DescribeStacks(&cloudformation.DescribeStacksInput{
 		StackName: aws.String(name),
 	})
-
-	if err != nil {
-		fmt.Printf("Error describing stack %v", err)
-	}
 
 	capabilities := []*string{}
 	capabilities = append(capabilities, aws.String(cloudformation.CapabilityCapabilityIam))
