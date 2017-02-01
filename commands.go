@@ -10,7 +10,9 @@ var Commands map[string]cli.CommandFactory
 func init() {
 	Commands = map[string]cli.CommandFactory{
 		"init": func() (cli.Command, error) {
-			return &command.InitCommand{}, nil
+			return &command.InitCommand{
+				Provider: AwsClient{}
+			}, nil
 		},
 	}
 }

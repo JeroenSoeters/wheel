@@ -8,12 +8,12 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/JeroenSoeters/wheel/aws"
+	"github.com/JeroenSoeters/wheel/wheel"
 )
 
 // InitCommand is a cli.Command implementation that initializes a Wheel project
 type InitCommand struct {
-	Provider aws.CloudProvider
+	Provider wheel.CloudProvider
 }
 
 // Configuration for Wheel
