@@ -45,14 +45,14 @@ project {
 
 	err := os.Mkdir(".wheel", 0777)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating .wheel directory")
+		fmt.Fprintf(os.Stdout, "Error creating .wheel directory")
 		return 1
 	}
 	fmt.Println("Created .wheel directory")
 
 	f, err := os.Create(".wheel/config")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating config file")
+		fmt.Fprintf(os.Stdout, "Error creating config file")
 		return 1
 	}
 	defer f.Close()
@@ -61,13 +61,16 @@ project {
 	t := template.Must(template.New("config").Parse(configTemplate))
 	err = t.Execute(w, config)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error writing to config file")
+		fmt.Fprintf(os.Stdout, "Error writing to config file")
 		return 1
 	}
 	w.Flush()
 	fmt.Println("Created wheel config")
 
-	*c.ProvisionBuildEnvironment()
+	if err = c.Provider.ProvisionBuildEnvironment(); err != nil {
+		fmt.Fprintf(os.Stdout, "Issue provisioning build environment: %v", err)
+		return 1
+	}
 
 	return 0
 }

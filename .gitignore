@@ -22,11 +22,15 @@ _testmain.go
 *.exe
 *.test
 *.prof
+./wheel
 
 # Python venv
 ansible/wheel
 
 # Vim files
 *.swp
+
+# jetbrains
+.idea
 
 .DS_Store

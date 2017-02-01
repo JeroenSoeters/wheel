@@ -25,8 +25,7 @@ func TestReadTemplate(t *testing.T) {
 	}
 }
 
-/*
-Commented out as this test is spinning up a full DC/OS cluster. This should move to a functional test at some point
+// Commented out as this test is spinning up a full DC/OS cluster. This should move to a functional test at some point
 
 func TestCreateStack(t *testing.T) {
 	if err := CreateStack("us-west-2", "dcos-test", map[string]string{
@@ -35,4 +34,3 @@ func TestCreateStack(t *testing.T) {
 		t.Errorf("Error creating stack %v", err)
 	}
 }
-*/

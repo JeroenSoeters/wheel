@@ -11,11 +11,14 @@ type MockCloudProvider struct {
 	BuildEnvironmentProvisioned bool
 }
 
-func (m MockCloudProvider) ProvisionBuildEnvironment() err {
+func (m *MockCloudProvider) ProvisionBuildEnvironment() error {
 	m.BuildEnvironmentProvisioned = true
+	return nil
 }
 
 func TestInitConfig(t *testing.T) {
+	clean()
+
 	args := []string{
 		"-project-name", "training-wheels",
 		"-key-pair", "dcos-bootstrap",

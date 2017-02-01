@@ -1,5 +1,5 @@
 package aws
 
 type CloudProvider interface {
-	ProvisionBuildEnvironment()
+	ProvisionBuildEnvironment() error
 }
