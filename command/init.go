@@ -37,6 +37,7 @@ func (c *InitCommand) Run(args []string) int {
 		return 2
 	}
 
+	// Create .wheel folder with configuration
 	const configTemplate = `
 project {
 	name = "{{.ProjectName}}"
@@ -67,6 +68,7 @@ project {
 	w.Flush()
 	fmt.Println("Created wheel config")
 
+	// Deploy cloudformatin template
 	if err = c.Provider.ProvisionBuildEnvironment(); err != nil {
 		fmt.Fprintf(os.Stdout, "Issue provisioning build environment: %v", err)
 		return 1
