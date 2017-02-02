@@ -2,8 +2,10 @@
 *.o
 *.a
 *.so
+*.dylib
+*.test
+*.out
 
-# Folders
 _obj
 _test
 
@@ -22,7 +24,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
-./wheel
+
 
 # Python venv
 ansible/wheel

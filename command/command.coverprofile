@@ -1,0 +1,14 @@
+mode: atomic
+github.com/JeroenSoeters/wheel/command/init.go:25.46,35.54 6 1
+github.com/JeroenSoeters/wheel/command/init.go:40.2,47.16 3 1
+github.com/JeroenSoeters/wheel/command/init.go:51.2,54.16 3 1
+github.com/JeroenSoeters/wheel/command/init.go:58.2,63.16 5 1
+github.com/JeroenSoeters/wheel/command/init.go:67.2,70.62 3 1
+github.com/JeroenSoeters/wheel/command/init.go:75.2,75.10 1 1
+github.com/JeroenSoeters/wheel/command/init.go:35.54,38.3 2 0
+github.com/JeroenSoeters/wheel/command/init.go:47.16,50.3 2 0
+github.com/JeroenSoeters/wheel/command/init.go:54.16,57.3 2 0
+github.com/JeroenSoeters/wheel/command/init.go:63.16,66.3 2 0
+github.com/JeroenSoeters/wheel/command/init.go:70.62,73.3 2 0
+github.com/JeroenSoeters/wheel/command/init.go:78.37,89.2 2 0
+github.com/JeroenSoeters/wheel/command/init.go:91.41,93.2 1 0

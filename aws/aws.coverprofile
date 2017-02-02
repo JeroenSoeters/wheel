@@ -1,0 +1,10 @@
+mode: atomic
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:16.37,18.16 2 2
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:23.2,23.26 1 2
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:18.16,21.3 2 0
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:26.54,28.2 1 0
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:30.82,32.16 2 1
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:36.2,47.37 7 1
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:54.2,61.12 2 1
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:32.16,34.3 1 0
+github.com/JeroenSoeters/wheel/aws/cloudformation.go:47.37,52.3 1 1
