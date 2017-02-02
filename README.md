@@ -1,5 +1,7 @@
 # Wheel
 
+[![wercker status](https://app.wercker.com/status/6ef859f0c88b3e5c33b25894bdab2aa0/s/master "wercker status")](https://app.wercker.com/project/byKey/6ef859f0c88b3e5c33b25894bdab2aa0)
+
 ## Mission Statement 
 Bootstrap a microservices system in minutes vs months.
 
@@ -22,6 +24,18 @@ Wheel is a command line util (written in golang) that orchestrates infrastructur
 
 ## Templates
 * scala-sbt
+
+## Setup and Build
+
+```
+make depend && make
+```
+
+## Testing
+
+```
+make test
+```
 
 ## Contributing
 For contributing please reach out at our slack: wheel-group.slack.com
