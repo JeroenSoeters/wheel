@@ -37,12 +37,12 @@ func (c AwsClient) ProvisionBuildEnvironment() error {
 	ew, err := NewStackEventWatcher(cf, "dcos-build")
 	if err != nil {
 		fmt.Printf("Failed to create stack event watcher: %v", err)
+	} else {
+	  err = ew.Watch()
 	}
 
 	// This will block until the stack is ready
 	fmt.Print("Waiting for stack creation to complete. This can take up to 10 minutes..")
-
-	err = ew.Watch()
 
 	return err
 }
