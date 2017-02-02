@@ -27,10 +27,9 @@ func TestReadTemplate(t *testing.T) {
 
 // Commented out as this test is spinning up a full DC/OS cluster. This should move to a functional test at some point
 
-func TestCreateStack(t *testing.T) {
-	if err := CreateStack("us-west-2", "dcos-test", map[string]string{
-		"KeyName": "dcos-bootstrap",
-	}); err != nil {
+func TestProvisionBuildEnvironment(t *testing.T) {
+	c := AwsClient{}
+	if err := c.ProvisionBuildEnvironment(); err != nil {
 		t.Errorf("Error creating stack %v", err)
 	}
 }

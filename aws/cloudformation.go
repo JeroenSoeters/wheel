@@ -24,17 +24,34 @@ func ReadTemplate() (string, error) {
 }
 
 func (c AwsClient) ProvisionBuildEnvironment() error {
-	return CreateStack("us-west-2", "dcos-build", map[string]string{"KeyName": "dcos-bootstrap"})
+	s := session.New(&aws.Config{Region: aws.String("us-west-2")})
+	cf := cloudformation.New(s)
+
+	// Kick off stack creation
+	//	if err := CreateStack(s, "dcos-build", map[string]string{"KeyName": "dcos-bootstrap"}); err != nil {
+	//		return fmt.Errorf("Problem creating stack: %v", err)
+	//	}
+
+	// Wait for stack to be completed
+	// create watcher
+	ew, err := NewStackEventWatcher(cf, "dcos-build")
+	if err != nil {
+		fmt.Printf("Failed to create stack event watcher: %v", err)
+	}
+
+	// This will block until the stack is ready
+	fmt.Print("Waiting for stack creation to complete. This can take up to 10 minutes..")
+
+	err = ew.Watch()
+
+	return err
 }
 
-func CreateStack(region string, name string, parameters map[string]string) error {
+func CreateStack(cf *cloudformation.CloudFormation, name string, parameters map[string]string) error {
 	template, err := ReadTemplate()
 	if err != nil {
 		fmt.Printf("Error loading template: %v", err)
 	}
-
-	s := session.New(&aws.Config{Region: aws.String(region)})
-	cf := cloudformation.New(s)
 
 	_, _ = cf.DescribeStacks(&cloudformation.DescribeStacksInput{
 		StackName: aws.String(name),
