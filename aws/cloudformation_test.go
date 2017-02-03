@@ -25,7 +25,8 @@ func TestReadTemplate(t *testing.T) {
 	}
 }
 
-// Commented out as this test is spinning up a full DC/OS cluster. This should move to a functional test at some point
+/*
+Commented out as this test is spinning up a full DC/OS cluster. This should move to a functional test at some point
 
 func TestProvisionBuildEnvironment(t *testing.T) {
 	c := AwsClient{}
@@ -33,3 +34,4 @@ func TestProvisionBuildEnvironment(t *testing.T) {
 		t.Errorf("Error creating stack %v", err)
 	}
 }
+*/

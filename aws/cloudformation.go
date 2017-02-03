@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/cloudformation"
 )
 
-type AwsClient struct {
+type CloudFormationService struct {
 }
 
 func ReadTemplate() (string, error) {
@@ -23,26 +23,25 @@ func ReadTemplate() (string, error) {
 	return string(data), nil
 }
 
-func (c AwsClient) ProvisionBuildEnvironment() error {
+func (c CloudFormationService) ProvisionBuildEnvironment() error {
 	s := session.New(&aws.Config{Region: aws.String("us-west-2")})
 	cf := cloudformation.New(s)
 
 	// Kick off stack creation
-	//	if err := CreateStack(s, "dcos-build", map[string]string{"KeyName": "dcos-bootstrap"}); err != nil {
-	//		return fmt.Errorf("Problem creating stack: %v", err)
-	//	}
+	if err := CreateStack(cf, "dcos-test", map[string]string{"KeyName": "dcos-bootstrap"}); err != nil {
+		return fmt.Errorf("Problem creating stack: %v", err)
+	}
 
 	// Wait for stack to be completed
-	// create watcher
-	ew, err := NewStackEventWatcher(cf, "dcos-build")
+	ew, err := NewStackEventWatcher(cf, "dcos-test")
 	if err != nil {
 		fmt.Printf("Failed to create stack event watcher: %v", err)
 	} else {
-	  err = ew.Watch()
+		fmt.Print("Waiting for stack creation to be created. This can take up to 10 minutes..")
+		err = ew.Watch()
 	}
 
-	// This will block until the stack is ready
-	fmt.Print("Waiting for stack creation to complete. This can take up to 10 minutes..")
+	fmt.Print("Build environment provisioned..")
 
 	return err
 }

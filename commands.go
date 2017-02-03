@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/JeroenSoeters/wheel/aws"
 	"github.com/JeroenSoeters/wheel/command"
 	"github.com/mitchellh/cli"
 )
@@ -11,7 +12,7 @@ func init() {
 	Commands = map[string]cli.CommandFactory{
 		"init": func() (cli.Command, error) {
 			return &command.InitCommand{
-				Provider: AwsClient{}
+				Provider: aws.CloudFormationService{},
 			}, nil
 		},
 	}

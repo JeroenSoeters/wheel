@@ -37,12 +37,9 @@ func NewStackEventWatcher(service *cloudformation.CloudFormation, stackName stri
 }
 
 func (sw *StackEventWatcher) Watch() error {
-	fmt.Print("Watching...")
 	if sw.events == nil {
-		fmt.Print("Events is nil")
 		sw.events = map[string]struct{}{}
 	}
-	fmt.Print("Done...")
 	lastStackStatus := ""
 	for {
 		// print the events for the stack
@@ -50,38 +47,11 @@ func (sw *StackEventWatcher) Watch() error {
 			StackName: aws.String(sw.StackName),
 		}, func(p *cloudformation.DescribeStackEventsOutput, _ bool) bool {
 			for _, stackEvent := range p.StackEvents {
-				fmt.Printf("event: %s", *stackEvent.EventId)
+				fmt.Printf("event: %s\n", *stackEvent.EventId)
 				if _, ok := sw.events[*stackEvent.EventId]; ok {
 					continue
 				}
 
-				/*
-					wrapStrPtr := func(s *string) string {
-						if s == nil {
-							return ""
-						}
-						return *s
-					}
-
-					l := log.WithField("Status", *stackEvent.ResourceStatus)
-					if stackEvent.ResourceType != nil {
-						l = l.WithField("Type", *stackEvent.ResourceType)
-					}
-					if stackEvent.ResourceType != nil {
-						l = l.WithField("Type", *stackEvent.ResourceType)
-					}
-					if stackEvent.PhysicalResourceId != nil {
-						l = l.WithField("PhysicalID", *stackEvent.PhysicalResourceId)
-					}
-					if stackEvent.LogicalResourceId != nil {
-						l = l.WithField("LogicalID", *stackEvent.LogicalResourceId)
-					}
-					if strings.Contains(*stackEvent.ResourceStatus, "FAIL") {
-						l.Error(wrapStrPtr(stackEvent.ResourceStatusReason))
-					} else {
-						l.Info(wrapStrPtr(stackEvent.ResourceStatusReason))
-					}
-				*/
 				sw.events[*stackEvent.EventId] = struct{}{}
 			}
 			return true
