@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+    - name: Install Python pip
+      yum: name=python-pip state=installed
+
+    - name: Install Python kazoo module
+      pip: name=kazoo
+
+    - name: Waiting for zookeper to be available
+      wait_for: host={{ zk_host }} port=2181
+
+    - name: Provision dcos user
+      znode:
+        hosts: "{{ zk_host }}:2181"
+        name: "/dcos/users/{{ dcos_user }}"
+        value: "{{ dcos_user }}"
+        state: present
