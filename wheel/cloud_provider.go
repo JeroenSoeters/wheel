@@ -1,5 +1,5 @@
 package wheel
 
 type CloudProvider interface {
-	ProvisionBuildEnvironment() error
+	ProvisionBuildEnvironment(name string) error
 }

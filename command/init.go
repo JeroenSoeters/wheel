@@ -69,7 +69,7 @@ project {
 	fmt.Println("Created wheel config")
 
 	// Deploy cloudformatin template
-	if err = c.Provider.ProvisionBuildEnvironment(); err != nil {
+	if err = c.Provider.ProvisionBuildEnvironment(config.ProjectName); err != nil {
 		fmt.Fprintf(os.Stdout, "Issue provisioning build environment: %v", err)
 		return 1
 	}

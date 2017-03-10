@@ -23,17 +23,18 @@ func ReadTemplate() (string, error) {
 	return string(data), nil
 }
 
-func (c CloudFormationService) ProvisionBuildEnvironment() error {
+func (c CloudFormationService) ProvisionBuildEnvironment(name string) error {
 	s := session.New(&aws.Config{Region: aws.String("us-west-2")})
 	cf := cloudformation.New(s)
 
+	stack := name + "-ci"
 	// Kick off stack creation
-	if err := CreateStack(cf, "dcos-test", map[string]string{"KeyName": "dcos-bootstrap"}); err != nil {
+	if err := CreateStack(cf, stack, map[string]string{"KeyName": "dcos-bootstrap"}); err != nil {
 		return fmt.Errorf("Problem creating stack: %v", err)
 	}
 
 	// Wait for stack to be completed
-	ew, err := NewStackEventWatcher(cf, "dcos-test")
+	ew, err := NewStackEventWatcher(cf, stack)
 	if err != nil {
 		fmt.Printf("Failed to create stack event watcher: %v", err)
 	} else {

@@ -11,7 +11,7 @@ type MockCloudProvider struct {
 	BuildEnvironmentProvisioned bool
 }
 
-func (m *MockCloudProvider) ProvisionBuildEnvironment() error {
+func (m *MockCloudProvider) ProvisionBuildEnvironment(name string) error {
 	m.BuildEnvironmentProvisioned = true
 	return nil
 }
