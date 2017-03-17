@@ -8,6 +8,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/JeroenSoeters/wheel/config"
 	"github.com/JeroenSoeters/wheel/wheel"
 )
 
@@ -16,26 +17,28 @@ type InitCommand struct {
 	Provider wheel.CloudProvider
 }
 
-// Configuration for Wheel
-type Config struct {
-	ProjectName string
-	KeyPair     string
-}
-
 func (c *InitCommand) Run(args []string) int {
 	fs := flag.NewFlagSet("init", flag.ContinueOnError)
 
-	config := Config{}
-
-	fs.StringVar(&config.ProjectName, "project-name", "", "project name")
-	fs.StringVar(&config.KeyPair, "key-pair", "", "AWS key pair")
+	var configFile string
+	fs.StringVar(&configFile, "config", "", "Wheel configuration file")
 
 	fs.Parse(args)
 
-	if config.ProjectName == "" || config.KeyPair == "" {
+	if configFile == "" {
 		fmt.Printf("Usage...")
+		fmt.Printf(c.Help())
 		return 2
 	}
+
+	config, err := config.LoadConfig(configFile)
+
+	if err != nil {
+		fmt.Printf("Error loading config %v", err)
+		return 2
+	}
+
+	fmt.Print("Config loaded")
 
 	// Create .wheel folder with configuration
 	const configTemplate = `
@@ -44,7 +47,7 @@ project {
 }
 `
 
-	err := os.Mkdir(".wheel", 0777)
+	err = os.Mkdir(".wheel", 0777)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "Error creating .wheel directory")
 		return 1

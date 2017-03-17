@@ -20,8 +20,7 @@ func TestInitConfig(t *testing.T) {
 	clean()
 
 	args := []string{
-		"-project-name", "training-wheels",
-		"-key-pair", "dcos-bootstrap",
+		"-config", "init_test.wheel",
 	}
 
 	provider := MockCloudProvider{}
@@ -37,8 +36,8 @@ func TestInitConfig(t *testing.T) {
 		t.Errorf("Failed to open config file: %v", err)
 	}
 
-	if strings.Index(string(f), "training-wheels") == -1 {
-		t.Errorf("Config did not contain project name %s", "training-wheels")
+	if strings.Index(string(f), "init-wheel-project") == -1 {
+		t.Errorf("Config did not contain project name %s", "init-wheel-project")
 	}
 
 	if !provider.BuildEnvironmentProvisioned {
