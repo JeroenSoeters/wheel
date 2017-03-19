@@ -1,6 +1,6 @@
 # Wheel
 
-[![wercker status](https://app.wercker.com/status/6ef859f0c88b3e5c33b25894bdab2aa0/s/master "wercker status")](https://app.wercker.com/project/byKey/6ef859f0c88b3e5c33b25894bdab2aa0)
+[![wercker status](https://app.wercker.com/status/6ef859f0c88b3e5c33b25894bdab2aa0/s/master "wercker status")](https://app.wercker.com/project/byKey/6ef859f0c88b3e5c33b25894bdab2aa0) [![Go Report Card](https://goreportcard.com/badge/github.com/JeroenSoeters/wheel)](https://goreportcard.com/report/github.com/JeroenSoeters/wheel)
 
 ## Mission Statement 
 Bootstrap a micro services system in minutes vs months.
