@@ -23,6 +23,9 @@ Wheel is a command line util that orchestrates infrastructure as code, pipelines
 * Spinnaker
 
 ## Templates
+* java-maven
+* java-gradle
+* node
 * scala-sbt
 
 ## Setup and Build
